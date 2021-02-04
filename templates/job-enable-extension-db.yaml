@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "pleroma.fullname" . }}-enable-db-extension
+  annotations:
+    "helm.sh/hook": post-install
+spec:
+  template:
+    metadata:
+      name:  {{ include "pleroma.fullname" . }}-enable-db-extension
+    spec:
+      containers:
+      - name: {{ include "pleroma.fullname" . }}-enable-db-extension
+        image: {{ .Values.postgresql.extensionImage }}
+        command: [ "bin/sh", "-c", 'psql -a -h {{ include "pleroma.postgresql.fullname" .}} -p  {{ .Values.postgresql.postgresqlPort }} -U {{ .Values.postgresql.postgresqlUsername }} -c "CREATE EXTENSION IF NOT EXISTS citext;"' ]
+        envFrom:
+          - configMapRef:
+              name: {{ include "pleroma.fullname" . }}-env
+        env:
+          - name: "PGPASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-postgresql
+                key: postgresql-password
+      restartPolicy: OnFailure

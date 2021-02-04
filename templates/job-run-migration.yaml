@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "pleroma.fullname" . }}-run-migration
+  annotations:
+    "helm.sh/hook": post-install
+spec:
+  template:
+    metadata:
+      name:  {{ include "pleroma.fullname" . }}-run-migration
+    spec:
+      containers:
+      - name: {{ include "pleroma.fullname" . }}-run-migration
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        command: [ "/bin/sh", "-c", "mix ecto.migrate"]
+      restartPolicy: OnFailure
