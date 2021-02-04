@@ -6,7 +6,7 @@ Deploy a Pleroma instance to Kubernetes using Helm.
 
 `cp values.yaml.template values.yaml`
 
-This Chart has been constructed with [docker-pleroma](https://github.com/angristan/docker-pleroma) by angristan in mind,
+This Chart has been constructed with [docker-pleroma](https://github.com/angristan/docker-pleroma) by Angristan in mind,
 and should work out of the box with it. Follow the instructions they have made for building the image (SECURITY WARNING: the 
 postgresql password will be baked into the image so DO NOT PUBLISH IT TO A PUBLIC DOCKER REGISTRY!).
 Most importantly the value of the postgres hostname MUST be `{{ .Release.Name }}-postgresql }}`, due
