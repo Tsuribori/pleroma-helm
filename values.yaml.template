@@ -13,6 +13,7 @@ image:
 pleromaImageOptions: # Settings dependent on how Docker image built
   mountPath: /pleroma/uploads # Where Docker image expects uploads to be mounted
   mixHome: /pleroma/.mix # The /path/to/.mix is usually found by WORKDIR in the Dockerfile
+  port: 4000
 
 imagePullSecrets: []
 nameOverride: ""
