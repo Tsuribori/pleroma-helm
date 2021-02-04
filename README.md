@@ -16,7 +16,10 @@ By default only `1Gi` is reserved for user uploads.
 
 Install with:
 
-`helm install pleroma .`
+```
+helm dep update
+helm install pleroma .
+```
 
 (Note in this example the postgres hostname is `pleroma-postgresql`)
 
