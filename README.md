@@ -4,14 +4,18 @@ Deploy a Pleroma instance to Kubernetes using Helm.
 
 ## Installing
 
-`cp values.yaml.template values.yaml`
+`cp values.template.yaml values.yaml`
 
 This Chart has been constructed with [docker-pleroma](https://github.com/angristan/docker-pleroma) by Angristan in mind,
 and should work out of the box with it. Follow the instructions they have made for building the image (SECURITY WARNING: the 
-postgresql password will be baked into the image so DO NOT PUBLISH IT TO A PUBLIC DOCKER REGISTRY!).
-Most importantly the value of the postgres hostname MUST be `{{ .Release.Name }}-postgresql }}`, due
-to the fact that all configs are baked in and can't be set by Kubernetes. After building change the
-contents in `values.yaml` to those matching `config/secret.exs`, most importantly the database and ingress parameters.
+postgresql password will be baked into the image so DO NOT PUBLISH IT TO A PUBLIC DOCKER REGISTRY if you are going to use the same
+password!).
+
+You can configure some Pleroma config values in `values.yaml` (you must atleast set the secret key).
+All configuration parameters can be changed/added in `templates/pleroma-configmap.yaml` which will be injected into the container
+(so the values used in building the Docker image can be overwritten, however this will trigger a recompilation inside the
+container so it's not the most efficient, but it is convienient). The hostname will be taken from the first host
+defined in the ingress so it's important to change it to your own.
 By default only `1Gi` is reserved for user uploads.
 
 Install with:
@@ -21,14 +25,13 @@ helm dep update
 helm install pleroma .
 ```
 
-(Note in this example the postgres hostname is `pleroma-postgresql`)
-
 Also to note is that the Bitnami Postgresql chart makes a `8Gi` PVC by default, see [here](https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters) to view all configurable parameters related to the chart.
 
 
 ## Using with other Docker Pleroma builds
 
-The most important values to change are under `pleromaImageOptions` in `values.yaml`.
+The most important values to change are under `pleromaImageOptions` in `values.yaml`. Also recompilation will fail
+if `podSecurityContext` does not match.
 
 
 ## Upgrading

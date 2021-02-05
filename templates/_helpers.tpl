@@ -67,3 +67,10 @@ Postgresql name
 {{- define "pleroma.postgresql.fullname" -}}
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Configfile fullpath
+*/}}
+{{- define "pleroma.configFullPath" -}}
+{{- printf "%s/%s" .Values.pleromaImageOptions.configPath .Values.pleromaImageOptions.configFile -}}
+{{- end -}}

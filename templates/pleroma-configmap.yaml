@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pleroma.fullname" . }}-configmap
+  labels:
+    {{- include "pleroma.labels" . | nindent 4 }}
+data:
+  {{ .Values.pleromaImageOptions.configFile }}: |
+    use Mix.Config
+
+    config :pleroma, Pleroma.Web.Endpoint,
+       http: [ ip: {0, 0, 0, 0}, ],
+       url: [host: {{ (index .Values.ingress.hosts 0).host | quote }}, scheme: "http", port: {{ .Values.pleromaImageOptions.port }}],
+       secret_key_base: {{ .Values.pleromaOptions.secret | quote }}
+
+    config :pleroma, :instance,
+      name: {{ .Values.pleromaOptions.name | quote }},
+      email: {{ .Values.pleromaOptions.email | quote }},
+      limit: 5000,
+      registrations_open: true
+
+    config :pleroma, :media_proxy,
+      enabled: false,
+      redirect_on_failure: true,
+      base_url: "https://cache.domain.tld"
+
+    config :pleroma, Pleroma.Repo,
+      adapter: Ecto.Adapters.Postgres,
+      username: {{ .Values.postgresql.postgresqlUsername | quote}},
+      password: {{ .Values.postgresql.postgresqlPassword | quote}},
+      database: {{ .Values.postgresql.postgresqlDatabase | quote}},
+      hostname: {{ include "pleroma.postgresql.fullname" . | quote }},
+      pool_size: 10
+
+    config :pleroma, configurable_from_database: true
+
