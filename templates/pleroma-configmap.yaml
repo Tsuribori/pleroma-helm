@@ -1,11 +1,11 @@
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
   name: {{ include "pleroma.fullname" . }}-configmap
   labels:
     {{- include "pleroma.labels" . | nindent 4 }}
-data:
-  {{ .Values.pleromaImageOptions.configFile }}: |
+stringData:
+  {{ .Values.pleromaImageOptions.configFile }}: | 
     use Mix.Config
 
     config :pleroma, Pleroma.Web.Endpoint,
@@ -33,4 +33,3 @@ data:
       pool_size: 10
 
     config :pleroma, configurable_from_database: true
-

@@ -11,8 +11,8 @@ spec:
     spec:
       volumes:
         - name: config
-          configMap:
-            name: {{ include "pleroma.fullname" . }}-configmap
+          secret:
+            secretName: {{ include "pleroma.fullname" . }}-configmap
       containers:
       - name: {{ include "pleroma.fullname" . }}-enable-db-extension
         image: {{ .Values.postgresql.extensionImage }}

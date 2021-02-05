@@ -32,8 +32,8 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "pleroma.fullname" . }}-uploads
         - name: config
-          configMap:
-            name: {{ include "pleroma.fullname" . }}-configmap
+          secret:
+            secretName: {{ include "pleroma.fullname" . }}-configmap
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
