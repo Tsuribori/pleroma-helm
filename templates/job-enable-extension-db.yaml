@@ -9,10 +9,6 @@ spec:
     metadata:
       name:  {{ include "pleroma.fullname" . }}-enable-db-extension
     spec:
-      volumes:
-        - name: config
-          secret:
-            secretName: {{ include "pleroma.fullname" . }}-configmap
       containers:
       - name: {{ include "pleroma.fullname" . }}-enable-db-extension
         image: {{ .Values.postgresql.extensionImage }}
@@ -26,8 +22,4 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-postgresql
                 key: postgresql-password
-        volumeMounts:
-          - name: config
-            mountPath: {{ template "pleroma.configFullPath" . }}
-            subPath: {{ .Values.pleromaImageOptions.configFile }}
       restartPolicy: OnFailure
