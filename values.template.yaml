@@ -5,13 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: yournamehere/pleroma
+  repository: "registry.gitlab.com/tsuribori/docker-pleroma"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1"
+  tag: "v2.3.0"
 
 pleromaImageOptions: # Settings dependent on how Docker image built
   mountPath: /pleroma/uploads # Where Docker image expects uploads to be mounted
+  staticPath: /pleroma/instance/static # Where static directory is located
   mixHome: /pleroma/.mix # The /path/to/.mix is usually found by WORKDIR in the Dockerfile
   port: 4000
   configPath: "/pleroma/config" # No trailing slash!
@@ -86,6 +87,11 @@ persistence:
     resources:
       requests:
         storage: 1Gi # How much storage for user uploads
+  static:
+    accessMode: ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi # How much storage for static content, probably doesn't need changing
 
 resources:
   {}

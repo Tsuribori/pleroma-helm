@@ -31,6 +31,9 @@ spec:
         - name: uploads
           persistentVolumeClaim:
             claimName: {{ template "pleroma.fullname" . }}-uploads
+        - name: static
+          persistentVolumeClaim:
+            claimName: {{ template "pleroma.fullname" . }}-static  
         - name: config
           secret:
             secretName: {{ include "pleroma.fullname" . }}-configmap
@@ -43,6 +46,8 @@ spec:
           volumeMounts:
             - name: uploads
               mountPath: {{ .Values.pleromaImageOptions.mountPath }}
+            - name: static
+              mountPath: {{ .Values.pleromaImageOptions.staticPath }} 
             - name: config
               mountPath: {{ template "pleroma.configFullPath" . }}
               subPath: {{ .Values.pleromaImageOptions.configFile }} 

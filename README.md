@@ -7,10 +7,7 @@ Deploy a Pleroma instance to Kubernetes using Helm.
 `cp values.template.yaml values.yaml`
 
 This Chart has been constructed with [docker-pleroma](https://github.com/angristan/docker-pleroma) by Angristan in mind,
-and should work out of the box with it. Follow the instructions they have made for building the image (SECURITY WARNING: the 
-postgresql password will be baked into the image so DO NOT PUBLISH IT TO A PUBLIC DOCKER REGISTRY if you are going to use the same
-password!).
-
+and should work out of the box with it. Images are provided from container registry at [GitLab](https://gitlab.com/Tsuribori/docker-pleroma).
 You can configure some Pleroma config values in `values.yaml` (you must atleast set the secret key).
 All configuration parameters can be changed/added in `templates/pleroma-configmap.yaml` which will be injected into the container
 (so the values used in building the Docker image can be overwritten, however this will trigger a recompilation inside the
@@ -39,6 +36,6 @@ if `podSecurityContext` does not match.
 Build a new version of the Docker image and change corresponding values in `values.yaml` and
 run:
 
-`helm upgrade pleroma`
+`helm upgrade pleroma .`
 
 Migrations *should* be handled automagically by `job-run-migration.yaml`.
