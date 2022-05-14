@@ -16,7 +16,7 @@ spec:
       containers:
       - name: {{ include "pleroma.fullname" . }}-run-migration
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
-        command: [ "/bin/sh", "-c", "mix ecto.migrate"]
+        command: [ "mix", "ecto.migrate" ]
         envFrom:
           - configMapRef:
               name: {{ include "pleroma.fullname" . }}-env
