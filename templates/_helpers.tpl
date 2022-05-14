@@ -74,3 +74,10 @@ Configfile fullpath
 {{- define "pleroma.configFullPath" -}}
 {{- printf "%s/%s" .Values.pleromaImageOptions.configPath .Values.pleromaImageOptions.configFile -}}
 {{- end -}}
+
+{{/*
+Configfile Override fullpath
+*/}}
+{{- define "pleroma.configOverrideFullPath" -}}
+{{- printf "%s/%s" .Values.pleromaImageOptions.configPath .Values.pleromaImageOptions.configOverrideFile -}}
+{{- end -}}

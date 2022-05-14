@@ -50,6 +50,10 @@ spec:
               mountPath: {{ .Values.pleromaImageOptions.staticPath }} 
             - name: config
               mountPath: {{ template "pleroma.configFullPath" . }}
+              subPath: {{ .Values.pleromaImageOptions.configFile }}
+            - name: config
+              mountPath: {{ template "pleroma.configOverrideFullPath" . }}
+              subPath: {{ .Values.pleromaImageOptions.configOverrideFile }}
           envFrom:
             - configMapRef:
                 name: {{ include "pleroma.fullname" . }}-env
