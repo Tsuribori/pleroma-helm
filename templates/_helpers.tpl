@@ -79,5 +79,5 @@ Configfile fullpath
 Configfile Override fullpath
 */}}
 {{- define "pleroma.configOverrideFullPath" -}}
-{{- printf "%s/%s" .Values.pleromaImageOptions.configPath .Values.pleromaImageOptions.configOverrideFile -}}
+{{- printf "/var/lib/pleroma/config.exs" -}}
 {{- end -}}
