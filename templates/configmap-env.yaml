@@ -12,3 +12,4 @@ data:
   DB_USER: {{ .Values.postgresql.postgresqlUsername }}
   DB_NAME: {{ .Values.postgresql.postgresqlDatabase }}
   DB_HOST: {{ include "pleroma.fullname" . }}-postgresql
+  SECRET_KEY_BASE: {{ .Values.pleromaOptions.secret | quote }}

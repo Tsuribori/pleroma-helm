@@ -14,9 +14,9 @@ pleromaImageOptions: # Settings dependent on how Docker image built
   mountPath: /var/lib/pleroma/uploads # Where Docker image expects uploads to be mounted
   staticPath: /var/lib/pleroma/static # Where static directory is located
   port: 4000
-  configPath: "/etc/pleroma/" # No trailing slash!
+  configPath: "/etc/pleroma" # No trailing slash!
   configFile: config.exs
-
+  configOverrideFile: config-override.exs
 
 pleromaOptions:
   secret: "" # ADD ME!
@@ -24,7 +24,14 @@ pleromaOptions:
   email: "yourname@example.com"
   notifyEmail: "yournotifyemail@example.com"
   domain: "pleroma.example.com"
+  configOverride: |
+    import config
 
+    config :pleroma, :instance,
+      registrations_open: false,
+      federating: true
+
+    config :pleroma, configurable_from_database: true
 
 imagePullSecrets: []
 nameOverride: ""
