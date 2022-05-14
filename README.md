@@ -38,4 +38,4 @@ run:
 
 `helm upgrade pleroma .`
 
-Migrations *should* be handled automagically by `job-run-migration.yaml`.
+Migrations *should* be handled automagically by Pleroma.
