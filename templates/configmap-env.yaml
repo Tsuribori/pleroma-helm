@@ -6,9 +6,9 @@ metadata:
     {{- include "pleroma.labels" . | nindent 4 }}
 data:
   DOMAIN: {{ .Values.pleromaOptions.domain }}
-  INSTANCE_NAME: "Pleroma"
-  POSTGRESQL_HOST: {{ template "pleroma.postgresql.fullname" . }}
-  DB_NAME: {{ .Values.postgresql.postgresqlDatabase }}
-  POSTGRESQL_PORT: {{ .Values.postgresql.postgresqlPort | quote }}
+  INSTANCE_NAME: {{ .Values.pleromaOptions.name | quote }}
+  ADMIN_EMAIL: {{ .Values.pleromaOptions.email | quote }}
+  NOTIFY_EMAIL: {{ .Values.pleromaOptions.notifyEmail | quote }}
   DB_USER: {{ .Values.postgresql.postgresqlUsername }}
-  DB_PASS: {{ .Values.postgresql.postgresqlPassword }}
+  DB_NAME: {{ .Values.postgresql.postgresqlDatabase }}
+  DB_HOST: {{ include "pleroma.fullname" . }}-postgresql

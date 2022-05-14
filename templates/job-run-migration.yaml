@@ -17,6 +17,15 @@ spec:
       - name: {{ include "pleroma.fullname" . }}-run-migration
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         command: [ "/bin/sh", "-c", "mix ecto.migrate"]
+        envFrom:
+          - configMapRef:
+              name: {{ include "pleroma.fullname" . }}-env
+        env:
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "pleroma.fullname" . }}-postgresql
+                key: postgresql-password
         volumeMounts:
           - name: config
             mountPath: {{ template "pleroma.configFullPath" . }}

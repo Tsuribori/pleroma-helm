@@ -50,35 +50,16 @@ spec:
               mountPath: {{ .Values.pleromaImageOptions.staticPath }} 
             - name: config
               mountPath: {{ template "pleroma.configFullPath" . }}
-              subPath: {{ .Values.pleromaImageOptions.configFile }} 
+              subPath: {{ .Values.pleromaImageOptions.configFile }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "pleroma.fullname" . }}-env
           env:
-            - name: DOMAIN
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "pleroma.fullname" . }}-env
-                  key: DOMAIN
-            - name: INSTANCE_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "pleroma.fullname" . }}-env
-                  key: INSTANCE_NAME
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "pleroma.fullname" . }}-env
-                  key: DB_USER
             - name: DB_PASS
               valueFrom:
-                configMapKeyRef:
-                  name: {{ include "pleroma.fullname" . }}-env
-                  key: DB_PASS
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "pleroma.fullname" . }}-env
-                  key: DB_NAME
-            - name: "MIX_HOME"
-              value: {{ .Values.pleromaImageOptions.mixHome | quote }}
+                secretKeyRef:
+                  name: {{ include "pleroma.fullname" . }}-postgresql
+                  key: postgresql-password
           ports:
             - name: http
               containerPort: {{ .Values.pleromaImageOptions.port }}
