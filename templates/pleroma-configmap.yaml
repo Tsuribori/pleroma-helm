@@ -17,7 +17,7 @@ stringData:
       name: {{ .Values.pleromaOptions.name | quote }},
       email: {{ .Values.pleromaOptions.email | quote }},
       limit: 5000,
-      registrations_open: true
+      registrations_open: false
 
     config :pleroma, :media_proxy,
       enabled: false,
