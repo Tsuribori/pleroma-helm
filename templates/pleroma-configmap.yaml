@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "pleroma.labels" . | nindent 4 }}
 stringData:
-  {{ .Values.pleromaImageOptions.configFile }}: | 
-    use Mix.Config
+  {{ .Values.pleromaImageOptions.configFile }}: |
+    import config
 
     config :pleroma, Pleroma.Web.Endpoint,
        secret_key_base: {{ .Values.pleromaOptions.secret | quote }}
