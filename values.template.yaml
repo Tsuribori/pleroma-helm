@@ -11,19 +11,27 @@ image:
   tag: "v2.4.0"
 
 pleromaImageOptions: # Settings dependent on how Docker image built
-  mountPath: /pleroma/uploads # Where Docker image expects uploads to be mounted
-  staticPath: /pleroma/instance/static # Where static directory is located
-  mixHome: /pleroma/.mix # The /path/to/.mix is usually found by WORKDIR in the Dockerfile
+  mountPath: /var/lib/pleroma/uploads # Where Docker image expects uploads to be mounted
+  staticPath: /var/lib/pleroma/static # Where static directory is located
   port: 4000
-  configPath: "/pleroma/config" # No trailing slash!
-  configFile: prod.secret.exs
-
+  configPath: "/etc/pleroma" # No trailing slash!
+  configFile: config.exs
+  configOverrideFile: config-override.exs
 
 pleromaOptions:
   secret: "" # ADD ME!
   name: "Pleroma"
   email: "yourname@example.com"
+  notifyEmail: "yournotifyemail@example.com"
+  domain: "pleroma.example.com"
+  configOverride: |
+    import config
 
+    config :pleroma, :instance,
+      registrations_open: false,
+      federating: true
+
+    config :pleroma, configurable_from_database: true
 
 imagePullSecrets: []
 nameOverride: ""
@@ -76,7 +84,6 @@ ingress:
 
 postgresql:
   postgresqlDatabase: pleroma
-  postgresqlPassword: pleroma # CHANGE ME!!!
   postgresqlUsername: postgres # citext extension requires superuser to activate
   postgresqlPort: "5432"
   extensionImage: "docker.io/bitnami/postgresql:9.6" #Used for enabling extension
@@ -87,11 +94,13 @@ persistence:
     resources:
       requests:
         storage: 1Gi # How much storage for user uploads
+    storageClassName: # CHANGE ME!!!
   static:
     accessMode: ReadWriteOnce
     resources:
       requests:
         storage: 1Gi # How much storage for static content, probably doesn't need changing
+    storageClassName: # CHANGE ME!!!
 
 resources:
   {}

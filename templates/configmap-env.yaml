@@ -5,7 +5,11 @@ metadata:
   labels:
     {{- include "pleroma.labels" . | nindent 4 }}
 data:
-  POSTGRESQL_HOST: {{ template "pleroma.postgresql.fullname" . }}
-  POSTGRESQL_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
-  POSTGRESQL_PORT: {{ .Values.postgresql.postgresqlPort | quote }}
-  POSTGRESQL_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
+  DOMAIN: {{ .Values.pleromaOptions.domain }}
+  INSTANCE_NAME: {{ .Values.pleromaOptions.name | quote }}
+  ADMIN_EMAIL: {{ .Values.pleromaOptions.email | quote }}
+  NOTIFY_EMAIL: {{ .Values.pleromaOptions.notifyEmail | quote }}
+  DB_USER: {{ .Values.postgresql.postgresqlUsername }}
+  DB_NAME: {{ .Values.postgresql.postgresqlDatabase }}
+  DB_HOST: {{ include "pleroma.fullname" . }}-postgresql
+  SECRET_KEY_BASE: {{ .Values.pleromaOptions.secret | quote }}

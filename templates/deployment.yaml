@@ -50,14 +50,19 @@ spec:
               mountPath: {{ .Values.pleromaImageOptions.staticPath }} 
             - name: config
               mountPath: {{ template "pleroma.configFullPath" . }}
-              subPath: {{ .Values.pleromaImageOptions.configFile }} 
-          lifecycle:
-            postStart:
-              exec:
-                command: ["/bin/sh", "-c", "mix local.hex"]
+              subPath: {{ .Values.pleromaImageOptions.configFile }}
+            - name: config
+              mountPath: {{ template "pleroma.configOverrideFullPath" . }}
+              subPath: {{ .Values.pleromaImageOptions.configOverrideFile }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "pleroma.fullname" . }}-env
           env:
-            - name: "MIX_HOME"
-              value: {{ .Values.pleromaImageOptions.mixHome | quote }}
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "pleroma.fullname" . }}-postgresql
+                  key: postgresql-password
           ports:
             - name: http
               containerPort: {{ .Values.pleromaImageOptions.port }}
