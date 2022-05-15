@@ -8,7 +8,7 @@ image:
   repository: "registry.gitlab.com/tsuribori/docker-pleroma"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v2.4.0"
+  tag: "v2.4.3"
 
 pleromaImageOptions: # Settings dependent on how Docker image built
   mountPath: /var/lib/pleroma/uploads # Where Docker image expects uploads to be mounted
@@ -25,7 +25,7 @@ pleromaOptions:
   notifyEmail: "yournotifyemail@example.com"
   domain: "pleroma.example.com"
   configOverride: |
-    import config
+    import Config
 
     config :pleroma, :instance,
       registrations_open: false,
