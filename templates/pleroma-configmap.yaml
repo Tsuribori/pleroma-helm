@@ -35,7 +35,8 @@ stringData:
       database: System.get_env("DB_NAME", "pleroma"),
       hostname: System.get_env("DB_HOST", "db"),
       {{- if not .Values.postgresql.enabled }}
-      port: System.get_env("DB_PORT", 5432),
+      port: System.get_env("DB_PORT", "5432"),
+      ssl: System.get_env("DB_SSL", "true") == "true",  # cast to bool
       {{- end }}
       pool_size: 10
 

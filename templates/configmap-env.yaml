@@ -18,6 +18,7 @@ data:
   DB_NAME: {{ .Values.externalPostgresql.database }}
   DB_HOST: {{ .Values.externalPostgresql.host }}
   DB_PORT: {{ .Values.externalPostgresql.port | quote }}
+  DB_SSL: {{ .Values.externalPostgresql.ssl | quote }}
   {{- end }}
   SECRET_KEY_BASE: {{ .Values.pleromaOptions.secret | quote }}
 
