@@ -32,6 +32,9 @@ pleromaOptions:
       federating: true
 
     config :pleroma, configurable_from_database: true
+  extraEnvFromSecret: ""
+  # Use this command arg to execute other commands before running like setting up new deps
+  command: ""
 
 imagePullSecrets: []
 nameOverride: ""
