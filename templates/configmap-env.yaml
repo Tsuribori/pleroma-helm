@@ -9,7 +9,15 @@ data:
   INSTANCE_NAME: {{ .Values.pleromaOptions.name | quote }}
   ADMIN_EMAIL: {{ .Values.pleromaOptions.email | quote }}
   NOTIFY_EMAIL: {{ .Values.pleromaOptions.notifyEmail | quote }}
+  {{- if .Values.postgresql.enabled }}
   DB_USER: {{ .Values.postgresql.postgresqlUsername }}
   DB_NAME: {{ .Values.postgresql.postgresqlDatabase }}
   DB_HOST: {{ include "pleroma.fullname" . }}-postgresql
+  {{- else }}
+  DB_USER: {{ .Values.externalPostgresql.user }}
+  DB_NAME: {{ .Values.externalPostgresql.database }}
+  DB_HOST: {{ .Values.externalPostgresql.host }}
+  DB_PORT: {{ .Values.externalPostgresql.port | quote }}
+  {{- end }}
   SECRET_KEY_BASE: {{ .Values.pleromaOptions.secret | quote }}
+

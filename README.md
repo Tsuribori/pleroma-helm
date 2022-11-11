@@ -25,6 +25,26 @@ helm install pleroma .
 Also to note is that the Bitnami Postgresql chart makes a `8Gi` PVC by default, see [here](https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters) to view all configurable parameters related to the chart.
 
 
+## External Postgresql
+
+Set `postgresql.enabled: false` and fill `externalPostgresql` values. The
+password should be stored in an existing secret referenced by
+`externalPostgresql.existingSecret` and
+`externalPostgresql.existingSecretPasswordKey`.
+
+```
+postgresql:
+  enabled: false
+
+externalPostgresql:
+  host: example.com
+  port: 5432
+  user: plemora
+  database: plemora
+  existingSecret: plemora-auth
+  existingSecretPasswordKey: porgresql-password
+```
+
 ## Using with other Docker Pleroma builds
 
 The most important values to change are under `pleromaImageOptions` in `values.yaml`. Also recompilation will fail
