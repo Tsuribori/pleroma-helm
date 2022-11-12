@@ -24,6 +24,7 @@ version: 0.1.1
 appVersion: "1.16.0"
 
 dependencies:
-  - name: postgresql
+  - condition: postgresql.enabled
+    name: postgresql
     version: "8.9.4" # Changing this "might" cause issues with image used for migration, check values.yaml
     repository: https://charts.bitnami.com/bitnami

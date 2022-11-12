@@ -65,8 +65,13 @@ spec:
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.postgresql.enabled }}
                   name: {{ include "pleroma.fullname" . }}-postgresql
                   key: postgresql-password
+                  {{- else }}
+                  name: {{ .Values.externalPostgresql.existingSecret }}
+                  key: {{ .Values.externalPostgresql.existingSecretPasswordKey }}
+                  {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.pleromaImageOptions.port }}

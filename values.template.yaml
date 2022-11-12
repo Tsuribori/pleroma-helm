@@ -91,6 +91,15 @@ postgresql:
   postgresqlPort: "5432"
   extensionImage: "docker.io/bitnami/postgresql:9.6" #Used for enabling extension
 
+externalPostgresql:
+  host: host
+  port: 5432
+  ssl: true
+  user: user
+  database: database
+  existingSecret: secret
+  existingSecretPasswordKey: postgresql-password
+
 persistence:
   uploads:
     accessMode: ReadWriteOnce

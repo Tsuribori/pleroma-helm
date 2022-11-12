@@ -12,7 +12,11 @@ spec:
       containers:
       - name: {{ include "pleroma.fullname" . }}-enable-db-extension
         image: {{ .Values.postgresql.extensionImage }}
+        {{- if .Values.postgresql.enabled }}
         command: [ "bin/sh", "-c", 'psql -a -h {{ include "pleroma.postgresql.fullname" .}} -p  {{ .Values.postgresql.postgresqlPort }} -U {{ .Values.postgresql.postgresqlUsername }} -c "CREATE EXTENSION IF NOT EXISTS citext;"' ]
+        {{- else }}
+        command: [ "bin/sh", "-c", 'psql -a -h {{ .Values.externalPostgresql.host }} -p  {{ .Values.externalPostgresql.port }} -U {{ .Values.externalPostgresql.user }} -c "CREATE EXTENSION IF NOT EXISTS citext;"' ]
+        {{- end }}
         envFrom:
           - configMapRef:
               name: {{ include "pleroma.fullname" . }}-env
@@ -20,6 +24,11 @@ spec:
           - name: "PGPASSWORD"
             valueFrom:
               secretKeyRef:
+                {{- if .Values.postgresql.enabled }}
                 name: {{ .Release.Name }}-postgresql
                 key: postgresql-password
+                {{- else }}
+                name: {{ .Values.externalPostgresql.existingSecret }}
+                key: {{ .Values.externalPostgresql.existingSecretPasswordKey }}
+                {{- end }}
       restartPolicy: OnFailure
