@@ -45,6 +45,32 @@ externalPostgresql:
   existingSecretPasswordKey: porgresql-password
 ```
 
+
+## Setting extra env vars
+
+Use `extraEnvFromSecret` to add env vars from a secret. This can be useful for
+example to set keys for the OAuth configuration.
+
+
+## Running commands before starting
+
+If you need to run commands before starting, like installing a new dependencies
+for OAuth you can set `pleromaOptions.command` to perform extra commands.
+
+As this override the docker container entrypoint you need to append it with:
+
+```
+command: ["<<your command here>> && $HOME/bin/pleroma_ctl migrate && exec $HOME/bin/pleroma start"]
+```
+
+for example, if you have set an OAuth strategy like `OAUTH_CONSUMER_STRATEGIES:
+"keycloak:ueberauth_keycloak_strategy"` you will need to run:
+
+```
+command: ["mix deps.get && $HOME/bin/pleroma_ctl migrate && exec $HOME/bin/pleroma start"]
+```
+
+
 ## Using with other Docker Pleroma builds
 
 The most important values to change are under `pleromaImageOptions` in `values.yaml`. Also recompilation will fail

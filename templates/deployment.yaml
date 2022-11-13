@@ -57,6 +57,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "pleroma.fullname" . }}-env
+            {{- if .Values.pleromaOptions.extraEnvFromSecret }}
+            - secretRef:
+                name: {{ .Values.pleromaOptions.extraEnvFromSecret }}
+            {{- end }}
           env:
             - name: DB_PASS
               valueFrom:
@@ -74,6 +78,10 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.pleromaOptions.command }}
+          command: ["/bin/sh", "-c"]
+          args: {{ .Values.pleromaOptions.command }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
